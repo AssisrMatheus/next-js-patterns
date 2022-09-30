@@ -5,6 +5,11 @@
         "match": "**/*.{graphql,tsx,ts}",
         "cmd": "npm run codegen",
         "silent": true
+      },
+      {
+        "match": "nexus/**/*.ts",
+        "cmd": "npm run nexus",
+        "silent": true
       }
     ]
   }

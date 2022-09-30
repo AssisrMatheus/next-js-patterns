@@ -16,17 +16,23 @@ export type WithApolloProps<T> = T & {
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 function createIsomorphLink() {
-  if (typeof window === "undefined") {
-    const { SchemaLink } = require("@apollo/client/link/schema");
-    const { schema } = require("./schema");
-    return new SchemaLink({ schema });
-  } else {
-    const { HttpLink } = require("@apollo/client/link/http");
-    return new HttpLink({
-      uri: "/api/graphql",
-      credentials: "same-origin",
-    });
-  }
+  // if (typeof window === "undefined") {
+  //   const { SchemaLink } = require("@apollo/client/link/schema");
+  //   try {
+  //     const { schema } = require("../../generated/schema");
+  //     if (schema) {
+  //       return new SchemaLink({ schema });
+  //     }
+  //   } catch (e) {
+  //     console.warn(e);
+  //   }
+  // }
+
+  const { HttpLink } = require("@apollo/client/link/http");
+  return new HttpLink({
+    uri: "/api/graphql", // This is fixed since it comes from next.js api now
+    credentials: "same-origin",
+  });
 }
 
 function createApolloClient() {
