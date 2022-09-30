@@ -1,0 +1,11 @@
+{
+  "saveAndRun": {
+    "commands": [
+      {
+        "match": "**/*.{graphql,tsx,ts}",
+        "cmd": "npm run codegen",
+        "silent": true
+      }
+    ]
+  }
+}
