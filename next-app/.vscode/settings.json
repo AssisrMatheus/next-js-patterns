@@ -10,6 +10,11 @@
         "match": "nexus/**/*.ts",
         "cmd": "npm run nexus",
         "silent": true
+      },
+      {
+        "match": "prisma/schema.prisma",
+        "cmd": "npm run prisma",
+        "silent": true
       }
     ]
   }

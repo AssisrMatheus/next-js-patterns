@@ -5,5 +5,6 @@ export const User = objectType({
   definition(t) {
     t.int("id");
     t.string("name");
+    t.string("email");
   },
 });

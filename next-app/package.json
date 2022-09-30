@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "codegen": "graphql-codegen --config codegen.ts",
-    "nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api/graphql.ts"
+    "nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api/graphql.ts",
+    "prisma": "prisma generate",
+    "migrate": "npx prisma migrate dev"
   },
   "dependencies": {
     "@apollo/client": "^3.7.0",
@@ -17,6 +19,7 @@
     "@graphql-codegen/typescript": "^2.7.3",
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@graphql-codegen/typescript-react-apollo": "^3.3.3",
+    "@prisma/client": "^4.4.0",
     "@types/cors": "^2.8.12",
     "@types/micro-cors": "^0.1.2",
     "@types/node": "18.7.23",
@@ -36,6 +39,7 @@
   },
   "devDependencies": {
     "eslint": "8.24.0",
-    "eslint-config-next": "12.3.1"
+    "eslint-config-next": "12.3.1",
+    "prisma": "^4.4.0"
   }
 }
