@@ -1,0 +1,14 @@
+{
+  "saveAndRun": {
+    "commands": [
+      // Don't put graphql-codegen here.
+      // The reason being because it needs the backend to be running
+      // So it's best to have it running with concurrently. So it runs when the server also runs
+      {
+        "match": "./nexus/*",
+        "cmd": "npm run nexus",
+        "silent": true
+      }
+    ]
+  }
+}

@@ -6,17 +6,19 @@ const config: CodegenConfig = {
   documents: [
     "pages/**/*.{graphql,tsx,ts}",
     "!pages/api/**/*.{graphql,tsx,ts}",
+    "nexus/**/*.{graphql,tsx,ts}",
   ],
   generates: {
     "./generated/gql": {
       preset: "client",
       hooks: {
-        afterAllFileWrite: "prettier --write",
-        afterOneFileWrite: "next lint --fix --file",
+        afterAllFileWrite: ["prettier --write", "next lint --fix"],
       },
       plugins: [
         "typescript",
+        // Not needed anymore since the new method already automatically types the query
         // "typescript-operations",
+        // Not needed anymore since the new method already automatically types the query
         // "typescript-react-apollo",
       ],
     },

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -n next,codegen --restart-tries 3 --restart-after 3000 -g \"next dev\" \"graphql-codegen --config codegen.ts --watch\"",
+    "dev": "concurrently -n next,codegen --restart-tries 3 --restart-after 3000 \"next dev\" \"graphql-codegen --config codegen.ts --watch\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

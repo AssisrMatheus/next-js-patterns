@@ -10,6 +10,7 @@ const LIST_USERS_QUERY = graphql(/* GraphQL */ `
     users {
       id
       name
+      email
     }
   }
 `);
