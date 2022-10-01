@@ -6,17 +6,12 @@ export const Mutation = mutationType({
     t.field("signupUser", {
       type: "User",
       args: {
-        name: stringArg(),
         email: nonNull(stringArg()),
+        name: nonNull(stringArg()),
+        password: nonNull(stringArg()),
       },
-      resolve: (_, { name, email }) => {
-        return db().user.create({
-          data: {
-            name,
-            email,
-          },
-        });
-      },
+      resolve: (_, { name, email }) =>
+        db().user.create({ data: { name, email } }),
     });
   },
 });

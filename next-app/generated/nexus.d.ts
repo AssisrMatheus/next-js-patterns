@@ -100,7 +100,8 @@ export interface NexusGenArgTypes {
   Mutation: {
     signupUser: { // args
       email: string; // String!
-      name?: string | null; // String
+      name: string; // String!
+      password: string; // String!
     }
   }
   Query: {

@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
+import { signIn } from "next-auth/react";
 import Head from "next/head";
-import AuthSignIn from "../../components/AuthSignIn";
+import AuthForm from "../../components/AuthForm";
 import styles from "../../styles/Home.module.css";
 
 const SignIn: NextPage = () => {
@@ -11,7 +12,7 @@ const SignIn: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <AuthSignIn />
+        <AuthForm onSubmit={(form) => signIn("credentials", form)} />
       </main>
     </div>
   );
