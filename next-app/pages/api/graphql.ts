@@ -1,7 +1,15 @@
 import { ApolloServer } from "apollo-server-micro";
-import { NextApiHandler } from "next";
 import { schema } from "../../nexus";
-import cors from "micro-cors";
+import Cors from "cors";
+import { NextApiRequest, NextApiResponse } from "next";
+import runMiddleware from "../../lib/nextjs/runMiddleware";
+import { optionalAuth } from "../../lib/next-auth/auth";
+
+// Initializing the cors middleware
+// You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
+const cors = Cors({
+  methods: ["POST", "GET", "HEAD"],
+});
 
 export const config = {
   api: {
@@ -9,30 +17,28 @@ export const config = {
   },
 };
 
-let apolloServerHandler: NextApiHandler;
-
-async function getApolloServerHandler() {
-  const apolloServer = new ApolloServer({ schema });
-
-  if (!apolloServerHandler) {
-    await apolloServer.start();
-
-    apolloServerHandler = apolloServer.createHandler({
-      path: "/api/graphql",
-    });
-  }
-
-  return apolloServerHandler;
-}
-
-const handler: NextApiHandler = async (req, res) => {
-  const apolloServerHandler = await getApolloServerHandler();
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  // Run the middleware
+  await runMiddleware(req, res, cors);
 
   if (req.method === "OPTIONS") {
     res.end();
     return;
   }
 
-  return apolloServerHandler(req, res);
-};
-export default cors()(handler as any);
+  const apolloServer = new ApolloServer({
+    schema,
+    context: async (ctx) => {
+      const session = await optionalAuth(ctx);
+
+      return { session };
+    },
+  });
+
+  await apolloServer.start();
+
+  return apolloServer.createHandler({ path: "/api/graphql" })(req, res);
+}

@@ -35,20 +35,21 @@ export type Query = {
 
 
 export type QueryUserArgs = {
-  id: Scalars['Int'];
+  id: Scalars['String'];
 };
 
 export type User = {
   __typename?: 'User';
   email?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
+  emailVerified?: Maybe<Scalars['DateTime']>;
+  id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
 };
 
 export type ListUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id?: number | null, name?: string | null, email?: string | null }> };
+export type ListUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id?: string | null, name?: string | null, email?: string | null }> };
 
 
 export const ListUsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListUsers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]} as unknown as DocumentNode<ListUsersQuery, ListUsersQueryVariables>;

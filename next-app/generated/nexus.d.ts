@@ -4,6 +4,7 @@
  */
 
 
+import type { Context } from "./../typings/context"
 import type { core } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
@@ -47,7 +48,8 @@ export interface NexusGenObjects {
   Query: {};
   User: { // root type
     email?: string | null; // String
-    id?: number | null; // Int
+    emailVerified?: NexusGenScalars['DateTime'] | null; // DateTime
+    id?: string | null; // String
     name?: string | null; // String
   }
 }
@@ -72,7 +74,8 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     email: string | null; // String
-    id: number | null; // Int
+    emailVerified: NexusGenScalars['DateTime'] | null; // DateTime
+    id: string | null; // String
     name: string | null; // String
   }
 }
@@ -87,7 +90,8 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     email: 'String'
-    id: 'Int'
+    emailVerified: 'DateTime'
+    id: 'String'
     name: 'String'
   }
 }
@@ -101,7 +105,7 @@ export interface NexusGenArgTypes {
   }
   Query: {
     user: { // args
-      id: number; // Int!
+      id: string; // String!
     }
   }
 }
@@ -137,7 +141,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

@@ -1,4 +1,4 @@
-import { intArg, list, nonNull, queryType } from "nexus";
+import { list, nonNull, queryType, stringArg } from "nexus";
 import { db } from "../../lib/prisma";
 import { User } from "./user";
 
@@ -7,7 +7,7 @@ export const Query = queryType({
     t.field("user", {
       type: User,
       args: {
-        id: nonNull(intArg()),
+        id: nonNull(stringArg()),
       },
       resolve: (_, { id }) => db().user.findUnique({ where: { id } }),
     });

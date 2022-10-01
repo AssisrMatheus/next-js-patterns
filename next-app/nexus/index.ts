@@ -11,9 +11,9 @@ export const schema = makeSchema({
     // The path to the auto generated typescript types
     typegen: path.join(process.cwd(), "generated/nexus.d.ts"),
   },
-  // contextType: {
-  //   module: path.join(__dirname, "../typings/context.d.ts"),
-  //   export: "Context",
-  // },
+  contextType: {
+    module: path.join(process.cwd(), "typings/context.d.ts"),
+    export: "Context",
+  },
   // prettierConfig: require.resolve("../../.prettierrc.js"),
 });
