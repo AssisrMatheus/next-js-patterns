@@ -6,6 +6,7 @@
     "node": "16"
   },
   "scripts": {
+    "predev": "npm run migrate",
     "dev": "concurrently -n next,codegen --restart-tries 3 --restart-after 3000 \"next dev\" \"npm run codegen -- --watch\"",
     "build": "next build",
     "start": "next start",
