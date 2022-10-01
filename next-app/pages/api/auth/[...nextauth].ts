@@ -7,6 +7,12 @@ import GitHubProvider from "next-auth/providers/github";
 export const authOptions: NextAuthOptions = {
   // Useful info: https://github.com/nextauthjs/next-auth/discussions/4394
   adapter: PrismaAdapter(db()),
+  // If using "CredentialsProvider", user sessions are not persisted in the database. Ref https://next-auth.js.org/providers/credentials
+  // Also next.js edge middlewares for now only works if using jwt strategy
+  session: { strategy: "jwt" },
+  pages: {
+    signIn: "/auth/signin",
+  },
   // Configure one or more authentication providers
   providers: [
     GitHubProvider({
@@ -21,23 +27,25 @@ export const authOptions: NextAuthOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials || !credentials.username || !credentials.password)
+        if (!credentials || !credentials.email || !credentials.password)
           return null;
 
-        const findUser = await db().user.findFirst({
-          where: { email: credentials.username },
+        // Add logic here to look up the user from the credentials supplied
+        const user = await db().user.findFirst({
+          where: { email: credentials.email },
         });
 
-        // Add logic here to look up the user from the credentials supplied
-        const user =
-          findUser ||
-          (await db().user.create({
-            data: { name: credentials.username, email: credentials.username },
-          }));
+        // const user =
+        //   findUser ||
+        //   (await db().user.create({
+        //     data: { name: credentials.username, email: credentials.username },
+        //   }));
+
+        // TODO: Check if password matches
 
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
@@ -52,9 +60,6 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
-  // If using "CredentialsProvider", user sessions are not persisted in the database. Ref https://next-auth.js.org/providers/credentials
-  // Also next.js edge middlewares for now only works if using jwt strategy
-  session: { strategy: "jwt" },
 };
 
 export default NextAuth(authOptions);

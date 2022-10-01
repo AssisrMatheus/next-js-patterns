@@ -1,0 +1,15 @@
+.label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid var(--accent);
+  padding: 8px 12px;
+
+  border-radius: 3px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}

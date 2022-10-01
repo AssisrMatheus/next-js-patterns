@@ -1,11 +1,12 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { useQuery } from "@apollo/client";
+import type { GetStaticProps, NextPage } from "next";
+import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import Link from "next/link";
 import { graphql } from "../generated/gql";
-import { useQuery } from "@apollo/client";
 import { addApolloState, initializeApollo } from "../lib/apollo";
-import { useSession, signIn, signOut } from "next-auth/react";
+import styles from "../styles/Home.module.css";
 
 const LIST_USERS_QUERY = graphql(/* GraphQL */ `
   query ListUsers {
@@ -33,9 +34,15 @@ const Home: NextPage = () => {
 
       <nav>
         {session?.user ? (
-          <button onClick={() => signOut()}>Sign Out</button>
+          <button type="button" onClick={() => signOut()}>
+            Sign Out
+          </button>
         ) : (
-          <button onClick={() => signIn()}>Sign In</button>
+          <Link href="/auth/signin">
+            <a>
+              <button type="button">Sign In</button>
+            </a>
+          </Link>
         )}
       </nav>
 
