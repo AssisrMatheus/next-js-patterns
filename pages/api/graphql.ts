@@ -31,6 +31,7 @@ export default async function handler(
 
   const apolloServer = new ApolloServer({
     schema,
+    cache: "bounded",
     context: async (ctx) => {
       const session = await optionalAuth(ctx);
 
