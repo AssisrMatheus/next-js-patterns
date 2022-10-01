@@ -1,9 +1,10 @@
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { graphql } from "../generated/gql";
 import { useQuery } from "@apollo/client";
+import { addApolloState, initializeApollo } from "../lib/apollo";
 
 const LIST_USERS_QUERY = graphql(/* GraphQL */ `
   query ListUsers {
@@ -85,6 +86,19 @@ const Home: NextPage = () => {
       </footer>
     </div>
   );
+};
+
+export const getStaticProps: GetStaticProps = async ({}) => {
+  const apolloClient = initializeApollo();
+
+  await apolloClient.query({ query: LIST_USERS_QUERY });
+
+  return addApolloState(apolloClient, {
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every X seconds
+    revalidate: 60, // In seconds
+  });
 };
 
 export default Home;

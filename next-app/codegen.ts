@@ -14,17 +14,8 @@ const config: CodegenConfig = {
       hooks: {
         afterAllFileWrite: ["prettier --write", "next lint --fix"],
       },
-      plugins: [
-        "typescript",
-        // Not needed anymore since the new method already automatically types the query
-        // "typescript-operations",
-        // Not needed anymore since the new method already automatically types the query
-        // "typescript-react-apollo",
-      ],
+      plugins: [],
     },
-    // "./generated/graphql.schema.json": {
-    //   plugins: ["introspection"],
-    // },
   },
 };
 

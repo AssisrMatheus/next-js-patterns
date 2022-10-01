@@ -16,17 +16,13 @@ export type WithApolloProps<T> = T & {
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 function createIsomorphLink() {
-  // if (typeof window === "undefined") {
-  //   const { SchemaLink } = require("@apollo/client/link/schema");
-  //   try {
-  //     const { schema } = require("../../generated/schema");
-  //     if (schema) {
-  //       return new SchemaLink({ schema });
-  //     }
-  //   } catch (e) {
-  //     console.warn(e);
-  //   }
-  // }
+  if (typeof window === "undefined") {
+    const { SchemaLink } = require("@apollo/client/link/schema");
+    const { schema } = require("../../nexus");
+    if (schema) {
+      return new SchemaLink({ schema });
+    }
+  }
 
   const { HttpLink } = require("@apollo/client/link/http");
   return new HttpLink({
@@ -55,7 +51,15 @@ export function initializeApollo(
     const existingCache = _apolloClient.extract();
 
     // Merge the existing cache into data passed from getStaticProps/getServerSideProps
-    const data = merge(initialState, existingCache);
+    const data = merge(existingCache, initialState, {
+      /**
+       * Resolve array merge by throwing away cache in favour of fresh data comming from the initialState fetching
+       *
+       * @param existingCacheArray The existing cache in the Apollo Client
+       * @param initialStateArray The new cache to be merged in the Apollo Client
+       */
+      arrayMerge: (_existingCacheArray, initialStateArray) => initialStateArray,
+    });
 
     // Restore the cache with the merged data
     _apolloClient.cache.restore(data);
@@ -68,19 +72,19 @@ export function initializeApollo(
   return _apolloClient;
 }
 
-export const addApolloState = <TPageProps extends { props?: TProps }, TProps>(
+export const addApolloState = <TPageProps extends Record<string, any>, TProps>(
   client: ApolloClient<NormalizedCacheObject>,
   pageProps: TPageProps
 ): TPageProps & { props: WithApolloProps<TProps> } => ({
   ...pageProps,
   props: {
-    ...pageProps?.props,
+    ...(pageProps?.props ? pageProps.props : {}),
     [APOLLO_STATE_PROP_NAME]: client.cache.extract(),
   },
 });
 
-export const useApollo = <T extends Record<string, unknown>>(pageProps: T) => {
-  const state = pageProps[APOLLO_STATE_PROP_NAME] as any;
-  const store = useMemo(() => initializeApollo(state), [state]);
-  return store;
-};
+export const useApollo = <T extends Record<string, unknown>>(pageProps: T) =>
+  useMemo(
+    () => initializeApollo(pageProps[APOLLO_STATE_PROP_NAME] as any),
+    [pageProps]
+  );
