@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import styles from "./index.module.css";
 import Field from "../Field";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function AuthForm({
   isSignup,
@@ -12,13 +13,15 @@ export default function AuthForm({
   onSubmit?: (form: Record<string, unknown>) => void;
 }) {
   const { status } = useSession();
-  const { push, query } = useRouter();
+  const { replace, query } = useRouter();
 
   const error = query.error;
 
-  if (status === "authenticated") {
-    push("/");
-  }
+  useEffect(() => {
+    if (status === "authenticated") {
+      replace("/");
+    }
+  }, [status, replace]);
 
   return (
     <div>
