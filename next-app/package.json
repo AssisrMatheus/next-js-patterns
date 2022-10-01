@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -n next,codegen --restart-tries 3 --restart-after 3000 \"next dev\" \"graphql-codegen --config codegen.ts --watch\"",
+    "dev": "concurrently -n next,codegen --restart-tries 3 --restart-after 3000 \"next dev\" \"npm run codegen -- --watch\"",
     "build": "next build",
     "start": "next start",
+    "serve": "npm run build && npm run start",
     "lint": "next lint",
     "codegen": "graphql-codegen --config codegen.ts",
     "nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api/graphql.ts",
