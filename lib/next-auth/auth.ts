@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
 import { UnauthorizedError } from "./unauthorizedError";
@@ -14,9 +13,11 @@ import { UnauthorizedError } from "./unauthorizedError";
 // ! to check if the user is available for something like a redirect or conditionally displaying something on the UI.
 // ! This here should ONLY be used by the backend side of the app
 
+type SessionParameters = Parameters<typeof unstable_getServerSession>;
+
 export const optionalAuth = (ctx?: {
-  req?: NextApiRequest;
-  res?: NextApiResponse;
+  req?: SessionParameters[0];
+  res?: SessionParameters[1];
 }) =>
   // If there's context and this context has either req or res
   ctx &&
@@ -27,8 +28,8 @@ export const optionalAuth = (ctx?: {
   unstable_getServerSession(ctx?.req, ctx?.res, authOptions);
 
 export const requiredAuth = async (ctx?: {
-  req?: NextApiRequest;
-  res?: NextApiResponse;
+  req?: SessionParameters[0];
+  res?: SessionParameters[1];
 }) => {
   const session = await optionalAuth(ctx);
 
@@ -40,6 +41,6 @@ export const requiredAuth = async (ctx?: {
 };
 
 export const hasSession = async (ctx?: {
-  req?: NextApiRequest;
-  res?: NextApiResponse;
+  req?: SessionParameters[0];
+  res?: SessionParameters[1];
 }) => !!(await optionalAuth(ctx));

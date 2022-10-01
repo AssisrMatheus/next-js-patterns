@@ -11,4 +11,21 @@ export async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith("/auth/signin") && token) {
     return NextResponse.redirect(new URL(`/`, req.url));
   }
+
+  const protectedRoutes = ["/protected"];
+
+  if (
+    protectedRoutes.some((x) => req.nextUrl.pathname.startsWith(x)) &&
+    !token
+  ) {
+    console.dir(JSON.stringify(req, null, 2));
+    return NextResponse.redirect(
+      new URL(
+        `/auth/signin?redirectUrl=${encodeURIComponent(
+          req.nextUrl as unknown as string
+        )}`,
+        req.url
+      )
+    );
+  }
 }

@@ -3,7 +3,8 @@
   border-bottom: 1px solid var(--accent);
 
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .button {
@@ -25,4 +26,34 @@
 
 .button.danger {
   border-color: var(--error);
+}
+
+.center {
+  display: flex;
+  place-content: center;
+  height: 100%;
+}
+
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  place-content: center;
+}
+
+.nav ul a {
+  padding: 24px 0;
+}
+
+.nav ul li:not(:first-child) {
+  margin-left: 8px;
+}
+.nav ul li:not(:last-child) {
+  margin-right: 8px;
+}
+
+.nav ul a:hover {
+  text-decoration: underline;
 }

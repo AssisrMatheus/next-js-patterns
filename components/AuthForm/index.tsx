@@ -16,6 +16,7 @@ export default function AuthForm({
   const { replace, query } = useRouter();
 
   const error = query.error;
+  const redirectUrl = query.redirectUrl;
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -54,7 +55,15 @@ export default function AuthForm({
           <p className={styles.dividerText}>OR</p>
         </div>
         {isSignup ? (
-          <Link href="/auth/signin">
+          <Link
+            href={
+              redirectUrl
+                ? `/auth/signin?redirectUrl=${encodeURIComponent(
+                    redirectUrl as string
+                  )}`
+                : "/auth/signin"
+            }
+          >
             <a>
               <button className={styles.button} type="button">
                 Go to Sign In
@@ -62,7 +71,15 @@ export default function AuthForm({
             </a>
           </Link>
         ) : (
-          <Link href="/auth/signup">
+          <Link
+            href={
+              redirectUrl
+                ? `/auth/signup?redirectUrl=${encodeURIComponent(
+                    redirectUrl as string
+                  )}`
+                : "/auth/signup"
+            }
+          >
             <a>
               <button className={styles.button} type="button">
                 Go to Sign Up

@@ -8,12 +8,15 @@ import { PrismaClient } from "@prisma/client";
 
 let prisma: PrismaClient | undefined = undefined;
 
+const getPrismaClient = () =>
+  new PrismaClient({ log: ["query", "info", "warn"] });
+
 export const db = () => {
   if (!prisma && process.env.NODE_ENV === "production") {
-    prisma = new PrismaClient({ log: ["query", "info", "warn"] });
+    prisma = getPrismaClient();
   } else if (!prisma) {
     if (!global.prisma) {
-      global.prisma = new PrismaClient({ log: ["query", "info", "warn"] });
+      global.prisma = getPrismaClient();
     }
     prisma = global.prisma;
   }
